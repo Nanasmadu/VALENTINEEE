@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Letter For You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF7F2;
+            --paper: #FFFEF9;
+            --ink: #2B2520;
+            --rose: #D4A5A5;
+            --deep-rose: #B8878A;
+            --sage: #A8B5A0;
+            --gold: #C9A961;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #F5EFE6 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient grain texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 100;
+        }
+
+        .scene {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.8s ease;
+        }
+
+        .scene.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ========== SCENE 1: INVITATION ========== */
+        #scene1 {
+            z-index: 2;
+        }
+
+        .invitation-wrapper {
+            position: relative;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: -30px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, var(--deep-rose) 0%, #8B5A5A 100%);
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(139, 90, 90, 0.4),
+                        inset 0 -2px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: sealFloat 3s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes sealFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+        }
+
+        .wax-seal::before {
+            content: '♥';
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 28px;
+            font-family: serif;
+        }
+
+        .envelope {
+            position: relative;
+            background: linear-gradient(135deg, #E8DCC8 0%, #D4C4A8 100%);
+            padding: 40px;
+            border-radius: 3px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15),
+                        0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: perspective(1000px) rotateX(2deg);
+        }
+
+        /* Realistic paper texture */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paper)' opacity='0.08'/%3E%3C/svg%3E");
+            opacity: 0.6;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        .invitation-card {
+            background: var(--paper);
+            padding: 35px 30px;
+            border: 1px solid rgba(201, 169, 97, 0.2);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .invitation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperTexture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paperTexture)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .decorative-border {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid var(--gold);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .decorative-border::before,
+        .decorative-border::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 1px solid var(--gold);
+            background: var(--paper);
+        }
+
+        .decorative-border::before {
+            top: -4px;
+            left: -4px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .decorative-border::after {
+            bottom: -4px;
+            right: -4px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .invitation-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .invitation-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            font-weight: 400;
+            color: var(--ink);
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .invitation-subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4em;
+            font-style: italic;
+            color: var(--deep-rose);
+            letter-spacing: 0.02em;
+        }
+
+        .event-details {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px 0;
+            border-top: 1px solid rgba(201, 169, 97, 0.2);
+            border-bottom: 1px solid rgba(201, 169, 97, 0.2);
+        }
+
+        .venue-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: var(--rose);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .detail-line {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25em;
+            color: var(--ink);
+            margin: 8px 0;
+            opacity: 0.85;
+        }
+
+        .flourish {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--gold);
+            opacity: 0.4;
+            font-size: 1.8em;
+            letter-spacing: 0.3em;
+        }
+
+        .open-btn {
+            display: block;
+            margin: 30px auto 0;
+            padding: 14px 45px;
+            background: linear-gradient(135deg, var(--rose) 0%, var(--deep-rose) 100%);
+            color: white;
+            border: none;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.3em;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            border-radius: 2px;
+            box-shadow: 0 4px 15px rgba(184, 135, 138, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .open-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .open-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .open-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 135, 138, 0.4);
+        }
+
+        .open-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== SCENE 2: LETTER ========== */
+        #scene2 {
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .letter-container {
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--paper);
+            padding: 50px 45px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2),
+                        0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border-radius: 2px;
+        }
+
+        /* Paper texture for letter */
+        .letter-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperLetter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paperLetter)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none;
+            border-radius: 2px;
+        }
+
+        .letter-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .letter-container::-webkit-scrollbar-track {
+            background: rgba(201, 169, 97, 0.1);
+        }
+
+        .letter-container::-webkit-scrollbar-thumb {
+            background: var(--rose);
+            border-radius: 3px;
+        }
+
+        .bouquet-wrapper {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: bouquetAppear 1.2s ease-out;
+        }
+
+        @keyframes bouquetAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .bouquet-svg {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.08));
+        }
+
+        .letter-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .letter-greeting {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--deep-rose);
+            text-align: center;
+            margin-bottom: 35px;
+            animation: fadeInUp 0.8s ease-out 0.3s backwards;
+        }
+
+        .letter-body {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.25em;
+            line-height: 1.9;
+            color: var(--ink);
+            opacity: 0.9;
+        }
+
+        .letter-body p {
+            margin-bottom: 25px;
+            animation: fadeInUp 0.8s ease-out backwards;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .letter-body p:nth-child(1) { animation-delay: 0.5s; }
+        .letter-body p:nth-child(2) { animation-delay: 0.6s; }
+        .letter-body p:nth-child(3) { animation-delay: 0.7s; }
+        .letter-body p:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 0.9;
+                transform: translateY(0);
+            }
+        }
+
+        .letter-body p:first-letter {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--rose);
+            float: left;
+            line-height: 0.9;
+            margin-right: 5px;
+            margin-top: 3px;
+        }
+
+        .signature-block {
+            margin-top: 45px;
+            text-align: right;
+            animation: fadeInUp 0.8s ease-out 1s backwards;
+        }
+
+        .signature-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-style: italic;
+            color: var(--ink);
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+
+        .signature-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--deep-rose);
+            position: relative;
+            display: inline-block;
+        }
+
+        .signature-name::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--rose), transparent);
+            opacity: 0.4;
+        }
+
+        /* Music Player Styles */
+        .music-player {
+            margin-top: 50px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(212, 165, 165, 0.08) 0%, rgba(168, 181, 160, 0.06) 100%);
+            border: 1px solid rgba(201, 169, 97, 0.15);
+            border-radius: 3px;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out 1.2s backwards;
+            position: relative;
+        }
+
+        .music-player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='musicNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='2' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23musicNoise)' opacity='0.02'/%3E%3C/svg%3E");
+            pointer-events: none;
+            border-radius: 3px;
+        }
+
+        .music-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+            color: var(--deep-rose);
+            margin-bottom: 8px;
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+
+        .music-subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: 0.95em;
+            color: var(--ink);
+            opacity: 0.6;
+            margin-bottom: 5px;
+        }
+
+        .youtube-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-note {
+            display: inline-block;
+            animation: musicFloat 2s ease-in-out infinite;
+            margin: 0 3px;
+        }
+
+        @keyframes musicFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .music-note:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .music-note:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .invitation-title {
+                font-size: 2.2em;
+            }
+            
+            .invitation-subtitle {
+                font-size: 1.2em;
+            }
+            
+            .venue-name {
+                font-size: 1.8em;
+            }
+            
+            .detail-line {
+                font-size: 1.1em;
+            }
+            
+            .envelope {
+                padding: 30px 20px;
+            }
+            
+            .invitation-card {
+                padding: 25px 20px;
+            }
+            
+            .letter-container {
+                padding: 35px 25px;
+            }
+            
+            .letter-greeting {
+                font-size: 2em;
+            }
+            
+            .letter-body {
+                font-size: 1.1em;
+            }
+            
+            .wax-seal {
+                width: 60px;
+                height: 60px;
+                top: -25px;
+                right: 15px;
+            }
+            
+            .wax-seal::before {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .invitation-title {
+                font-size: 1.8em;
+            }
+            
+            .venue-name {
+                font-size: 1.5em;
+            }
+            
+            .open-btn {
+                padding: 12px 35px;
+                font-size: 1.15em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scene 1: Invitation -->
+    <div class="scene" id="scene1">
+        <div class="invitation-wrapper">
+            <div class="wax-seal"></div>
+            <div class="envelope">
+                <div class="invitation-card">
+                    <div class="decorative-border"></div>
+                    
+                    <div class="invitation-header">
+                        <div class="invitation-title">STAMPIFY</div>
+                        <div class="invitation-subtitle">@kithcatsy invites you to this special-valentines day!</div>
+                    </div>
+                    
+                    <div class="flourish">❦</div>
+                    
+                    <div class="event-details">
+                        <div class="venue-name">14 cat's Café</div>
+                        <div class="detail-line">444 loveheartedly Street</div>
+                        <div class="detail-line">love, the deepest at her hearts</div>
+                        <div class="detail-line" style="margin-top: 15px; font-style: italic; color: var(--deep-rose);">
+                            February, 2026
+                        </div>
+                        <div class="detail-line">00:00 AM — 00:00 PM</div>
+                    </div>
+                    
+                    <div class="flourish">❦</div>
+                    
+                    <button class="open-btn" onclick="openLetter()">
+                        <span>READ YOUR LETTER</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene 2: Letter -->
+    <div class="scene" id="scene2">
+        <div class="letter-container">
+            <div class="bouquet-wrapper">
+                <svg class="bouquet-svg" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Gradients for realistic flowers -->
+                        <radialGradient id="roseGrad1" cx="30%" cy="30%">
+                            <stop offset="0%" style="stop-color:#F5D5D8;stop-opacity:1" />
+                            <stop offset="60%" style="stop-color:#E6B8BE;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#D4A5A5;stop-opacity:1" />
+                        </radialGradient>
+                        <radialGradient id="roseGrad2" cx="40%" cy="35%">
+                            <stop offset="0%" style="stop-color:#F8DFE2;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#E8C1C6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#D89FA5;stop-opacity:1" />
+                        </radialGradient>
+                        <radialGradient id="roseGrad3" cx="35%" cy="30%">
+                            <stop offset="0%" style="stop-color:#FBE8EA;stop-opacity:1" />
+                            <stop offset="55%" style="stop-color:#EAC9CE;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#DCA8AE;stop-opacity:1" />
+                        </radialGradient>
+                        <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#B8C9AC;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#8FA083;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6B8E5F;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#4A6441;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="wrapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#D8E8D0;stop-opacity:0.9" />
+                            <stop offset="100%" style="stop-color:#C5DBBC;stop-opacity:0.95" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- Wrapping paper with folds -->
+                    <path d="M 80 250 Q 150 235 220 250 L 235 360 Q 150 375 65 360 Z" 
+                          fill="url(#wrapGrad)" stroke="#A8B5A0" stroke-width="1.5" opacity="0.85"/>
+                    
+                    <!-- Paper fold highlights -->
+                    <path d="M 100 260 L 95 345" stroke="#E8F0E3" stroke-width="2" opacity="0.6"/>
+                    <path d="M 150 248 L 150 362" stroke="#E8F0E3" stroke-width="2.5" opacity="0.7"/>
+                    <path d="M 200 260 L 205 345" stroke="#E8F0E3" stroke-width="2" opacity="0.6"/>
+                    
+                    <!-- Paper fold shadows -->
+                    <path d="M 85 265 L 80 350" stroke="#8FA083" stroke-width="1.5" opacity="0.3"/>
+                    <path d="M 215 265 L 220 350" stroke="#8FA083" stroke-width="1.5" opacity="0.3"/>
+                    
+                    <!-- Stems inside wrap -->
+                    <line x1="115" y1="250" x2="115" y2="350" stroke="url(#stemGrad)" stroke-width="3.5"/>
+                    <line x1="150" y1="240" x2="150" y2="360" stroke="url(#stemGrad)" stroke-width="4"/>
+                    <line x1="185" y1="250" x2="185" y2="350" stroke="url(#stemGrad)" stroke-width="3.5"/>
+                    
+                    <!-- Ribbon - more elaborate bow -->
+                    <ellipse cx="85" cy="355" rx="35" ry="16" fill="#E6B8BE" opacity="0.75" transform="rotate(-15 85 355)"/>
+                    <ellipse cx="215" cy="355" rx="35" ry="16" fill="#E6B8BE" opacity="0.75" transform="rotate(15 215 355)"/>
+                    <ellipse cx="85" cy="355" rx="28" ry="12" fill="#F5D5D8" opacity="0.6" transform="rotate(-15 85 355)"/>
+                    <ellipse cx="215" cy="355" rx="28" ry="12" fill="#F5D5D8" opacity="0.6" transform="rotate(15 215 355)"/>
+                    <circle cx="150" cy="355" r="12" fill="#D4A5A5"/>
+                    <circle cx="150" cy="355" r="8" fill="#E6B8BE" opacity="0.7"/>
+                    
+                    <!-- Ribbon tails with curves -->
+                    <path d="M 55 355 Q 40 358 35 365" stroke="#E6B8BE" stroke-width="8" fill="none" opacity="0.7" stroke-linecap="round"/>
+                    <path d="M 245 355 Q 260 358 265 365" stroke="#E6B8BE" stroke-width="8" fill="none" opacity="0.7" stroke-linecap="round"/>
+                    <path d="M 55 355 Q 40 358 35 365" stroke="#F5D5D8" stroke-width="5" fill="none" opacity="0.5" stroke-linecap="round"/>
+                    <path d="M 245 355 Q 260 358 265 365" stroke="#F5D5D8" stroke-width="5" fill="none" opacity="0.5" stroke-linecap="round"/>
+                    
+                    <!-- Decorative wheat/dried grass -->
+                    <g opacity="0.8">
+                        <line x1="225" y1="180" x2="245" y2="230" stroke="#C9A961" stroke-width="2"/>
+                        <ellipse cx="246" cy="185" rx="2" ry="6" fill="#D4B56D" transform="rotate(-25 246 185)"/>
+                        <ellipse cx="247" cy="195" rx="2" ry="6" fill="#D4B56D" transform="rotate(-25 247 195)"/>
+                        <ellipse cx="248" cy="205" rx="2" ry="6" fill="#D4B56D" transform="rotate(-25 248 205)"/>
+                        <ellipse cx="249" cy="215" rx="2" ry="6" fill="#D4B56D" transform="rotate(-25 249 215)"/>
+                    </g>
+                    
+                    <!-- Leaves scattered throughout -->
+                    <ellipse cx="75" cy="160" rx="12" ry="22" fill="url(#leafGrad)" transform="rotate(-45 75 160)" opacity="0.85"/>
+                    <path d="M 75 150 Q 75 160 75 170" stroke="#6B8E5F" stroke-width="0.8" opacity="0.6"/>
+                    
+                    <ellipse cx="235" cy="190" rx="10" ry="20" fill="url(#leafGrad)" transform="rotate(40 235 190)" opacity="0.8"/>
+                    <path d="M 235 180 Q 235 190 235 200" stroke="#6B8E5F" stroke-width="0.8" opacity="0.6"/>
+                    
+                    <ellipse cx="95" cy="220" rx="11" ry="19" fill="url(#leafGrad)" transform="rotate(-55 95 220)" opacity="0.82"/>
+                    
+                    <!-- Realistic Roses with layered petals -->
+                    
+                    <!-- Rose 1: Top left - fully bloomed -->
+                    <g>
+                        <!-- Outer petals -->
+                        <ellipse cx="100" cy="100" rx="20" ry="16" fill="url(#roseGrad1)" opacity="0.7" transform="rotate(-25 100 100)"/>
+                        <ellipse cx="115" cy="105" rx="18" ry="15" fill="url(#roseGrad1)" opacity="0.65" transform="rotate(25 115 105)"/>
+                        <ellipse cx="85" cy="105" rx="18" ry="15" fill="url(#roseGrad1)" opacity="0.65" transform="rotate(-55 85 105)"/>
+                        <ellipse cx="100" cy="118" rx="19" ry="14" fill="url(#roseGrad1)" opacity="0.7" transform="rotate(5 100 118)"/>
+                        <!-- Middle petals -->
+                        <ellipse cx="97" cy="105" rx="14" ry="11" fill="url(#roseGrad2)" opacity="0.8" transform="rotate(-15 97 105)"/>
+                        <ellipse cx="108" cy="108" rx="13" ry="10" fill="url(#roseGrad2)" opacity="0.75" transform="rotate(30 108 108)"/>
+                        <ellipse cx="93" cy="112" rx="13" ry="10" fill="url(#roseGrad2)" opacity="0.75" transform="rotate(-40 93 112)"/>
+                        <!-- Inner petals -->
+                        <ellipse cx="100" cy="108" rx="9" ry="8" fill="url(#roseGrad3)" opacity="0.9"/>
+                        <circle cx="100" cy="108" r="5" fill="#D89FA5"/>
+                        <!-- Petal shadows -->
+                        <ellipse cx="100" cy="112" rx="8" ry="4" fill="#B8878A" opacity="0.2"/>
+                    </g>
+                    
+                    <!-- Rose 2: Top center - largest, main focal point -->
+                    <g>
+                        <!-- Outer petals -->
+                        <ellipse cx="150" cy="85" rx="24" ry="19" fill="url(#roseGrad1)" opacity="0.7" transform="rotate(-20 150 85)"/>
+                        <ellipse cx="168" cy="92" rx="22" ry="18" fill="url(#roseGrad1)" opacity="0.68" transform="rotate(30 168 92)"/>
+                        <ellipse cx="132" cy="92" rx="22" ry="18" fill="url(#roseGrad1)" opacity="0.68" transform="rotate(-50 132 92)"/>
+                        <ellipse cx="150" cy="108" rx="23" ry="17" fill="url(#roseGrad1)" opacity="0.72" transform="rotate(8 150 108)"/>
+                        <ellipse cx="160" cy="105" rx="20" ry="16" fill="url(#roseGrad1)" opacity="0.65" transform="rotate(45 160 105)"/>
+                        <!-- Middle petals -->
+                        <ellipse cx="147" cy="95" rx="16" ry="13" fill="url(#roseGrad2)" opacity="0.82" transform="rotate(-12 147 95)"/>
+                        <ellipse cx="158" cy="98" rx="15" ry="12" fill="url(#roseGrad2)" opacity="0.78" transform="rotate(35 158 98)"/>
+                        <ellipse cx="142" cy="102" rx="15" ry="12" fill="url(#roseGrad2)" opacity="0.78" transform="rotate(-38 142 102)"/>
+                        <ellipse cx="153" cy="103" rx="14" ry="11" fill="url(#roseGrad2)" opacity="0.75" transform="rotate(15 153 103)"/>
+                        <!-- Inner petals -->
+                        <ellipse cx="150" cy="98" rx="11" ry="9" fill="url(#roseGrad3)" opacity="0.92"/>
+                        <ellipse cx="148" cy="101" rx="8" ry="7" fill="url(#roseGrad3)" opacity="0.88"/>
+                        <circle cx="150" cy="99" r="6" fill="#DCA8AE"/>
+                        <!-- Deep center -->
+                        <circle cx="150" cy="99" r="3" fill="#B8878A" opacity="0.6"/>
+                        <!-- Petal shadows -->
+                        <ellipse cx="150" cy="105" rx="10" ry="5" fill="#B8878A" opacity="0.25"/>
+                    </g>
+                    
+                    <!-- Rose 3: Top right -->
+                    <g>
+                        <!-- Outer petals -->
+                        <ellipse cx="200" cy="110" rx="19" ry="15" fill="url(#roseGrad1)" opacity="0.68" transform="rotate(-30 200 110)"/>
+                        <ellipse cx="214" cy="115" rx="17" ry="14" fill="url(#roseGrad1)" opacity="0.64" transform="rotate(20 214 115)"/>
+                        <ellipse cx="186" cy="115" rx="17" ry="14" fill="url(#roseGrad1)" opacity="0.64" transform="rotate(-60 186 115)"/>
+                        <ellipse cx="200" cy="127" rx="18" ry="13" fill="url(#roseGrad1)" opacity="0.7" transform="rotate(3 200 127)"/>
+                        <!-- Middle petals -->
+                        <ellipse cx="198" cy="117" rx="13" ry="10" fill="url(#roseGrad2)" opacity="0.79" transform="rotate(-18 198 117)"/>
+                        <ellipse cx="207" cy="120" rx="12" ry="9" fill="url(#roseGrad2)" opacity="0.76" transform="rotate(28 207 120)"/>
+                        <!-- Inner petals -->
+                        <ellipse cx="200" cy="119" rx="8" ry="7" fill="url(#roseGrad3)" opacity="0.88"/>
+                        <circle cx="200" cy="119" r="4" fill="#D89FA5"/>
+                    </g>
+                    
+                    <!-- Rose 4: Middle left -->
+                    <g>
+                        <ellipse cx="110" cy="155" rx="21" ry="17" fill="url(#roseGrad1)" opacity="0.7" transform="rotate(-22 110 155)"/>
+                        <ellipse cx="125" cy="161" rx="19" ry="15" fill="url(#roseGrad1)" opacity="0.66" transform="rotate(32 125 161)"/>
+                        <ellipse cx="95" cy="161" rx="19" ry="15" fill="url(#roseGrad1)" opacity="0.66" transform="rotate(-52 95 161)"/>
+                        <ellipse cx="110" cy="174" rx="20" ry="15" fill="url(#roseGrad1)" opacity="0.71" transform="rotate(6 110 174)"/>
+                        <ellipse cx="108" cy="163" rx="14" ry="11" fill="url(#roseGrad2)" opacity="0.81" transform="rotate(-14 108 163)"/>
+                        <ellipse cx="117" cy="166" rx="13" ry="10" fill="url(#roseGrad2)" opacity="0.77" transform="rotate(30 117 166)"/>
+                        <ellipse cx="110" cy="165" rx="9" ry="8" fill="url(#roseGrad3)" opacity="0.9"/>
+                        <circle cx="110" cy="165" r="5" fill="#DCA8AE"/>
+                        <ellipse cx="110" cy="170" rx="8" ry="4" fill="#B8878A" opacity="0.22"/>
+                    </g>
+                    
+                    <!-- Rose 5: Center right -->
+                    <g>
+                        <ellipse cx="175" cy="145" rx="20" ry="16" fill="url(#roseGrad1)" opacity="0.69" transform="rotate(-28 175 145)"/>
+                        <ellipse cx="190" cy="150" rx="18" ry="15" fill="url(#roseGrad1)" opacity="0.65" transform="rotate(24 190 150)"/>
+                        <ellipse cx="160" cy="150" rx="18" ry="15" fill="url(#roseGrad1)" opacity="0.65" transform="rotate(-56 160 150)"/>
+                        <ellipse cx="175" cy="163" rx="19" ry="14" fill="url(#roseGrad1)" opacity="0.7" transform="rotate(4 175 163)"/>
+                        <ellipse cx="173" cy="152" rx="13" ry="10" fill="url(#roseGrad2)" opacity="0.8" transform="rotate(-16 173 152)"/>
+                        <ellipse cx="182" cy="155" rx="12" ry="9" fill="url(#roseGrad2)" opacity="0.76" transform="rotate(26 182 155)"/>
+                        <ellipse cx="175" cy="154" rx="8" ry="7" fill="url(#roseGrad3)" opacity="0.89"/>
+                        <circle cx="175" cy="154" r="4" fill="#D89FA5"/>
+                    </g>
+                    
+                    <!-- Rose 6: Lower center -->
+                    <g>
+                        <ellipse cx="145" cy="190" rx="22" ry="18" fill="url(#roseGrad1)" opacity="0.7" transform="rotate(-24 145 190)"/>
+                        <ellipse cx="161" cy="196" rx="20" ry="16" fill="url(#roseGrad1)" opacity="0.67" transform="rotate(28 161 196)"/>
+                        <ellipse cx="129" cy="196" rx="20" ry="16" fill="url(#roseGrad1)" opacity="0.67" transform="rotate(-54 129 196)"/>
+                        <ellipse cx="145" cy="210" rx="21" ry="16" fill="url(#roseGrad1)" opacity="0.72" transform="rotate(7 145 210)"/>
+                        <ellipse cx="143" cy="198" rx="15" ry="12" fill="url(#roseGrad2)" opacity="0.82" transform="rotate(-13 143 198)"/>
+                        <ellipse cx="153" cy="201" rx="14" ry="11" fill="url(#roseGrad2)" opacity="0.78" transform="rotate(32 153 201)"/>
+                        <ellipse cx="145" cy="200" rx="10" ry="8" fill="url(#roseGrad3)" opacity="0.91"/>
+                        <circle cx="145" cy="200" r="5" fill="#DCA8AE"/>
+                        <ellipse cx="145" cy="206" rx="9" ry="4" fill="#B8878A" opacity="0.24"/>
+                    </g>
+                    
+                    <!-- Small rosebuds -->
+                    <g opacity="0.85">
+                        <ellipse cx="128" cy="135" rx="8" ry="11" fill="url(#roseGrad2)" transform="rotate(-15 128 135)"/>
+                        <ellipse cx="130" cy="135" rx="6" ry="9" fill="url(#roseGrad3)" transform="rotate(10 130 135)"/>
+                        <circle cx="129" cy="135" r="3" fill="#E6B8BE"/>
+                    </g>
+                    
+                    <g opacity="0.82">
+                        <ellipse cx="190" cy="175" rx="7" ry="10" fill="url(#roseGrad2)" transform="rotate(20 190 175)"/>
+                        <ellipse cx="188" cy="175" rx="5" ry="8" fill="url(#roseGrad3)" transform="rotate(-12 188 175)"/>
+                        <circle cx="189" cy="175" r="2.5" fill="#E6B8BE"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <div class="letter-content">
+                <h1 class="letter-greeting">My Dearest Love,</h1>
+                <h1 class="letter-greeting">This meow-cat is giving you a little love.</h1>
+                
+                <div class="letter-body">
+                    <p>
+                        Love is everywhere today, in the gifts, in the flowers, in sweet little notes, but love is not juts for
+                        one day.it's here always, in quite and gentle ways.
+                    </p>
+                    
+                    <p>
+                        its in the way your friends wait for you before leaving, the way someone remembers your favorite song, 
+                        the way the sky changes colors just to make the world a little prettier. its in laughter shared over silly jokes, 
+                        in the warmth of a message saying, did you get home safe? did you have a good day? did the night bring you peace? 
+                        love is in the little things, the ones that dont always get noticed but are always there.
+                    </p>
+                    
+                    <p>
+                        These roses, delicate and beautiful, pale in comparison to the beauty you bring to my life. 
+                        Each petal represents a moment we have shared, a memory I hold dear. Though flowers may fade, 
+                        my devotion to you will remain ever-blooming. you are loved, not just today, but every single day. 
+                        even on the days you feel invisible. even when no one says it out loud. 
+                        you are a part of someone's world in a way that matters. you are always become my part of my world, 
+                        and i am so grateful for you.
+                    </p>
+                    
+                    <p>
+                        so, whether you celebrate or not, 
+                        whether you receive a gift or not, let today be a reminder: love isnt just something you 
+                        give or receive—its something that surrounds you, in a million small and quiet ways. happy 
+                        valentines day, but more than that—happy you more matters!
+                    </p>
+                </div>
+                
+                <div class="signature-block">
+                    <div class="signature-text">With all my love,</div>
+                    <div class="signature-name">@ kithcatsy</div>
+                </div>
+
+                <!-- Music Player -->
+                <div class="music-player">
+                    <div class="music-title">
+                        <span class="music-note">♪</span>
+                        A Song For You
+                        <span class="music-note">♫</span>
+                    </div>
+                    <div class="music-subtitle">Listen while you read</div>
+                    
+                    <iframe data-testid="embed-iframe" 
+                    style="border-radius:12px" 
+                    src="https://open.spotify.com/embed/track/5xpQ0MD7ZzPXkkgTu92lPL?utm_source=generator" 
+                    width="100%" 
+                    height="152" 
+                    frameBorder="0" 
+                    allowfullscreen="" 
+                    allow="autoplay; clipboard-write; encrypted-media; 
+                    fullscreen; picture-in-picture" loading="lazy">
+                    </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            const scene1 = document.getElementById('scene1');
+            const scene2 = document.getElementById('scene2');
+            
+            // Fade out scene 1
+            scene1.classList.add('hidden');
+            
+            // After fade completes, show scene 2
+            setTimeout(() => {
+                scene2.style.opacity = '1';
+            }, 800);
+        }
+    </script>
+</body>
+</html>
